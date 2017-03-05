@@ -1,0 +1,53 @@
+
+javaclass.py :: Module for parsing Java .class files
+
+classdiff.py :: Command line utility to compare the API differences
+                between two .class files.
+
+jardiff.py   :: Command line utility to compare the API differences
+                between two jar files.
+
+
+Running javaclass.py by itself will display information about 
+class supplied as arguments.  Example:
+% python javaclass.py Test.class
+  Version: 49.0 (1.5)
+  Constants Pool: 30
+    1     Method          23
+    2     Field           24
+    3     String          19
+    4     Method          27
+    5     Class           Test
+    6     Class           java/lang/Object
+    7     Utf8            a
+    8     Utf8            I
+    9     Utf8            <init>
+    10    Utf8            ()V
+    11    Utf8            Code
+    12    Utf8            LineNumberTable
+    13    Utf8            test
+    14    Utf8            SourceFile
+    15    Utf8            Test.java
+    16    Unknown(12)             9
+    17    Class           java/lang/System
+    18    Unknown(12)             25
+    19    Utf8            hu
+    20    Class           java/io/PrintStream
+    21    Unknown(12)             28
+    22    Utf8            Test
+    23    Utf8            java/lang/Object
+    24    Utf8            java/lang/System
+    25    Utf8            out
+    26    Utf8            Ljava/io/PrintStream;
+    27    Utf8            java/io/PrintStream
+    28    Utf8            println
+    29    Utf8            (Ljava/lang/String;)V
+  Attributes: 
+  Interfaces: Access: 0x21 [ Superclass Public ]
+  Methods: 
+      public void Test()
+      void test()
+  Class: Test
+  Super Class: java/lang/Object
+
+

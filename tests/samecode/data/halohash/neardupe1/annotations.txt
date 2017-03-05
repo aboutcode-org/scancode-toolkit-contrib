@@ -1,0 +1,97 @@
+#
+# Copyright (c) 2008-2009 by nexB, Inc. http://www.nexb.com/ - All rights reserved.
+#
+
+        class TestBaseHaloHash(halohash.BaseHaloHash):
+            def __init__(self):
+                halohash.BaseHaloHash.__init__(self)
+            def compute(self):
+                return bitarray([1] * len(self.hashes))
+
+        tbhh = TestBaseHaloHash()
+        self.assertEqual([], tbhh.hashes)
+
+        tbhh.update('1')
+        self.assertEqual(['1'], tbhh.hashes)
+
+        tbhh.update(['2', '3'])
+        self.assertEqual(['1', '2', '3'], tbhh.hashes)
+
+        self.assertEqual('111', tbhh.hash().to01())
+        self.assertEqual(7, tbhh.intdigest())
+        self.assertEqual('\xe0', tbhh.digest())
+        self.assertEqual('e0', tbhh.hexdigest())
+        self.assertEqual(3, tbhh.elements_count())
+
+    def test_BaseBucketHaloHash(self):
+        class BaseBucketHaloHashSubclass(halohash.BaseBucketHaloHash):
+
+            def __init__(self, size_in_bits):
+                halohash.BaseBucketHaloHash.__init__(self, size_in_bits)
+
+            def compute(self):
+                return bitarray([1] * len(self.hashes))
+
+        tbbhh = BaseBucketHaloHashSubclass(size_in_bits=32)
+        self.assertEqual(commoncode.hash.get_hasher(160), tbbhh.hashmodule)
+
+        tbbhh.update(['1', '2', '3'])
+        buck = tbbhh.build_buckets()
+        expected = [None, None, None, None, None, None,
+                    [bitarray('1010110101000011001001010110111100100010011101'
+                              '1000001001100010101000101011101001101000110001'
+                              '1000010100011010100011011100110001110010101010'
+                              '00010100010101011')],
+                    None, None, None, None, None, None, None,
+                    [bitarray('1111101111001101000110110101110110011011000001'
+                              '0001110111010101110111011010110001110110110110'
+                              '0011100100011100001010011010111000100000110111'
+                              '01000001110111011')],
+                    None, None, None, None, None, None, None,
+                    None, None, None, None, None,
+                    [bitarray('0100100101110010010001101111011101011001100110'
+                              '0110111110001100111000000011101100000110010101'
+                              '0110111101011101100010010101000001101011001000'
+                              '00001000010110000')],
+                    None, None, None, None]
+        self.assertEqual(expected, buck)
+
+        hashsize = 2 ** 7
+        tbbhh = BaseBucketHaloHashSubclass(size_in_bits=hashsize)
+        tbbhh.update([ str(x) for x in range(1024)])
+        buck = tbbhh.build_buckets()
+        self.assertEqual(hashsize, len(buck))
+
+    def test_BucketAverageHaloHash_file_matching(self):
+        base = self.get_test_loc('halohash/neardupe1')
+        def geth(fn, size_in_bits=32):
+            f = open(join(base, fn)).read()
+            return halohash.BucketAverageHaloHash(f.split(), size_in_bits)
+        h1 = geth('djc1')
+        h2 = geth('djc2')
+        h3 = geth('djc3')
+        h4 = geth('djc4')
+        h5 = geth('annotations.py')
+        self.assertEqual(0, halohash.hamming_distance(h1, h1))
+        self.assertEqual(0, halohash.hamming_distance(h1, h2))
+        self.assertEqual(1, halohash.hamming_distance(h1, h3))
+        self.assertEqual(1, halohash.hamming_distance(h1, h4))
+        self.assertEqual(1, halohash.hamming_distance(h2, h3))
+        self.assertEqual(13, halohash.hamming_distance(h1, h5))
+
+        h1 = geth('djc1', size_in_bits=256)
+        h2 = geth('djc2', size_in_bits=256)
+        h3 = geth('djc3', size_in_bits=256)
+        h4 = geth('djc4', size_in_bits=256)
+        h5 = geth('annotations.py', size_in_bits=256)
+        self.assertEqual(0, halohash.hamming_distance(h1, h1))
+        self.assertEqual(0, halohash.hamming_distance(h1, h2))
+        self.assertEqual(3, halohash.hamming_distance(h1, h3))
+        self.assertEqual(11, halohash.hamming_distance(h1, h4))
+        self.assertEqual(3, halohash.hamming_distance(h2, h3))
+        self.assertEqual(124, halohash.hamming_distance(h1, h5))
+
+    def test_BitAverageHaloHash_file_matching(self):
+        base = self.get_test_loc('halohash/neardupe1')
+        def geth(fn, size=32):
+            f = open(join(base, fn)).read()

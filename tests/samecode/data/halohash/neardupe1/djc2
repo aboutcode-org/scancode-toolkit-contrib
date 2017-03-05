@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Fix for ticket #728:
+# always run from the folder where djc is. 
+# Note that this is far from perfect (it will not survive a rename of the executable, for example)
+COMMAND=$0
+cd ${COMMAND:0:${#COMMAND}-4}
+
+PYTHON_VERSION=2.5
+
+VERSION_COMMAND="import sys; sys.exit(sys.stdin.readline().find('$PYTHON_VERSION') == -1)"
+
+if [ "$PYTHON" == "" ]; then
+  for PYTHON in `which python`               \
+                `which python2.5`            \
+                '/usr/bin/python'            \
+                '/usr/local/bin/python'      \
+                '/usr/bin/python2.5'         \
+                '/usr/local/bin/python2.5'
+  do
+    if [ -x $PYTHON ]; then
+      $PYTHON -V 2>&1 | $PYTHON -c "$VERSION_COMMAND" &> /dev/null
+      if [ $? == 0 ]; then
+        break
+      fo
+    fi
+    PYTHON=
+  done
+fi
+
+if [ "$PYTHON" == "" ]; then
+  echo
+  echo "The DejaCode Toolkit requires Python $PYTHON_VERSION, which was not found at any usual location."
+  echo
+  echo "Please set the environment variable \$PYTHON to the location of Python $PYTHON_VERSION and restart."
+  echo 
+  exit -1
+fi
+
+unset PYTHONPATH
+
+$PYTHON -c "import sys, os; sys.path.remove(''); sys.path.insert(0, os.path.abspath('.')); from dejacode import interpreter; interpreter._main()" "$@"
