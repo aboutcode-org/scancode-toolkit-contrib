@@ -306,11 +306,8 @@ class BaseBucketHaloHash(BaseHaloHash):
         buckets = []
         # TODO: are we off by one on this range?
         for i in range(self.number_of_buckets):
-             buck = hash_buckets[i]
-             if len(buck) > 0:
-                buckets.append(buck)
-             else:
-                buckets.append(None)
+            buck = hash_buckets[i]
+            buckets.append(buck or None)
         return buckets
 
 
