@@ -24,6 +24,7 @@
 
 from __future__ import absolute_import, print_function, division
 
+from collections import defaultdict
 from itertools import imap, izip
 import math
 
@@ -296,25 +297,17 @@ class BaseBucketHaloHash(BaseHaloHash):
         Return a list of buckets splitting high and low using bit shifts and
         group by high.
         """
-        # FIXME use a defaultdict(list)
-        hash_buckets = {}
+        hash_buckets = defaultdict(list)
         for h in self.hashes:
             hbv = bitarray_from_bytes(h.digest())
             hi = bit_to_num(hbv[0:self.high])
             lo = hbv[self.high:]
-            try:
-                hash_buckets[hi].append(lo)
-            except KeyError:
-                hash_buckets[hi] = []
-                hash_buckets[hi].append(lo)
+            hash_buckets[hi].append(lo)
         buckets = []
         # TODO: are we off by one on this range?
         for i in range(self.number_of_buckets):
-            try:
-                buck = hash_buckets[i]
-                buckets.append(buck)
-            except KeyError:
-                buckets.append(None)
+            buck = hash_buckets[i]
+            buckets.append(buck or None)
         return buckets
 
 
