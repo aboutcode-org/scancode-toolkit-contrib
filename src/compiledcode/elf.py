@@ -71,10 +71,9 @@ class Elf(object):
         self.files = self.symbols_section.files
 
         # sections parsers
-        self.readelf_sections = [ElfDynamicSection(), self.symbols_section]
+        self.readelf_sections = [ElfDynamicSection(), ElfRelocatablesSection(), self.symbols_section]
         self.handlers = {}
         self.readelf_options = []
-
         # The elf location
         self.elf_location = location
 
@@ -652,6 +651,8 @@ class ElfDebugPubnamesSection(object):
     """
     pass
 
+def RELOC_RE():
+    return re.compile(r"^([0-9a-fA-F]+)\s+([A-Fa-f0-9]+)\s+(\w+)\s+([A-Fa-f0-9]+)\s+(\w+)")
 
 class ElfRelocatablesSection(object):
     """
@@ -715,4 +716,20 @@ class ElfRelocatablesSection(object):
     0804e0b0  00002d07 R_386_JUMP_SLOT   00000000   __strdup
     0804e0b4  00002e07 R_386_JUMP_SLOT   00000000   exit
     """
-    pass
+    def __init__(self):
+        self.readelf_option = '--relocs'
+        self.start_re = re.compile("^Relocation section")
+        self.end_re = EMPTY_LINE_RE()
+        self.sym_names = set()
+        
+    def parse(self, elf, file_like):
+        while 1:
+            line = next_line(file_like)
+            if not line or re.match(self.end_re, line):
+                break
+            line = line.strip()
+            match = RELOC_RE().match(line)
+            if match:
+                sym = match.groups()[4]
+                self.sym_names.add(sym)
+
