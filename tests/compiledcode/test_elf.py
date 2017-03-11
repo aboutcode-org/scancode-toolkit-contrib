@@ -224,12 +224,20 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_elf_libelf_so(self):
         test_file = self.get_test_loc('elf/libelf.so')
-        expected_file = self.get_test_loc('elf/libelf.so.expected_elf_symbols')
-        with codecs.open(expected_file, encoding='utf-8') as expect:
-            expected = json.load(expect)
+        expected_file1 = self.get_test_loc('elf/libelf.so.expected_elf_symbols')
+        expected_file2 = self.get_test_loc('elf/libelf.so.expected_elf_relocatable_symbols')
+        with codecs.open(expected_file1, encoding='utf-8') as expect1:
+            expected1 = json.load(expect1)
         elf = Elf(test_file)
-        for section, expected_values in expected.items():
+        for section, expected_values in expected1.items():
             result = getattr(elf.symbols_section, section)
+            for i, v in enumerate(sorted(expected_values)):
+                assert tuple(v) == tuple(sorted(result)[i])
+
+        with codecs.open(expected_file2, encoding='utf-8') as expect2:
+            expected2 = json.load(expect2)
+        for section, expected_values in expected2.items():
+            result = getattr(elf.relocatable_section, section)
             for i, v in enumerate(sorted(expected_values)):
                 assert tuple(v) == tuple(sorted(result)[i])
 

@@ -68,10 +68,11 @@ class Elf(object):
 
         # Symbols is an instance of ElfSymbolsTableSection
         self.symbols_section = ElfSymbolsTableSection()
+	self.relocatable_section = ElfRelocatablesSection()
         self.files = self.symbols_section.files
 
         # sections parsers
-        self.readelf_sections = [ElfDynamicSection(), ElfRelocatablesSection(), self.symbols_section]
+        self.readelf_sections = [ElfDynamicSection(), self.relocatable_section, self.symbols_section]
         self.handlers = {}
         self.readelf_options = []
         # The elf location
@@ -651,6 +652,7 @@ class ElfDebugPubnamesSection(object):
     """
     pass
 
+#0804e000  00000107 R_386_JUMP_SLOT   00000000   fileno
 def RELOC_RE():
     return re.compile(r"^([0-9a-fA-F]+)\s+([A-Fa-f0-9]+)\s+(\w+)\s+([A-Fa-f0-9]+)\s+(\w+)")
 
