@@ -9,7 +9,7 @@ install:
     - ./configure
 
 script:
-    - py.test -n 2 -vvs
+    - bin/py.test -n 2 -vvs
 
 notifications:
     irc:
