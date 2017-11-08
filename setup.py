@@ -56,7 +56,6 @@ setup(
     ],
     install_requires=[
         # compiledcode and packagedcode
-        'pefile >= 1.2.10-132',
         'macholib >=1.7',
         'altgraph >=0.13',
 

@@ -1,8 +1,0 @@
-PATH
-  remote: .
-  foo: bar
-  tag: that
-
-GEM
-  remote: http://rubygems.org/
-  glob: *
