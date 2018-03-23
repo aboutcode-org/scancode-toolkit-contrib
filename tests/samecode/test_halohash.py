@@ -149,16 +149,16 @@ class TestHalohash(FileBasedTesting):
         h4 = geth('djc4')
         h5 = geth('annotations.txt')
         assert 0 == halohash.hamming_distance(h1, h1)
-        assert 2 == halohash.hamming_distance(h1, h2)
+        assert 1 == halohash.hamming_distance(h1, h2)
         assert 4 == halohash.hamming_distance(h1, h3)
-        assert 7 == halohash.hamming_distance(h1, h4)
-        assert 2 == halohash.hamming_distance(h2, h3)
+        assert 6 == halohash.hamming_distance(h1, h4)
+        assert 3 == halohash.hamming_distance(h2, h3)
         assert 16 == halohash.hamming_distance(h1, h5)
 
     def test_BitAverageHaloHash_simple(self):
         a = halohash.BitAverageHaloHash(None, size_in_bits=512)
         [a.update(str(x)) for x in xrange(4096)]
-        expected = '1c61001246514d1bea84fb65df08d71f2d3181ae1ac9d67c1bd38b988e5b2d6ea4b3e1b2cc2f66cd08de7ec269210c0e94f551f13425291572bf38892136a71c'
+        expected = 'e39effe5b9aeb2e4157b049a20f728e0d2ce7e51e5362981e40c746771a4d2915b4c1e4d33d09932f721813d96def3f16b0aae0e4bdad6ea8d40c776dec958e3'
         assert expected == a.hexdigest()
 
     def test_BitAverageHaloHash_elements_count_unicode(self):
@@ -212,18 +212,17 @@ class TestHalohash(FileBasedTesting):
 
     def test_random_BitAverageHaloHash(self):
         result = self._random_HaloHash_test(halohash.BitAverageHaloHash, 256, 1000)
-        expected = [
-            (0, 132), (1, 134), (2, 133), (3, 127), (4, 125), (5, 124), (6, 122), (7,
-            121), (8, 116), (9, 114), (10, 113), (11, 111), (12, 113), (13, 113),
-            (14, 114), (15, 114), (16, 107), (17, 104), (18, 104), (19, 98), (20,
-            104), (21, 102), (22, 98), (23, 92), (24, 93), (25, 88), (26, 89), (27,
-            83), (28, 87), (29, 87), (30, 95), (31, 90), (32, 91), (33, 86), (34,
-            81), (35, 82), (36, 86), (37, 90), (38, 88), (39, 81), (40, 81), (41,
-            78), (42, 74), (43, 74), (44, 68), (45, 70), (46, 69), (47, 66), (48,
-            63), (49, 62), (50, 58), (51, 57), (52, 51), (53, 51), (54, 52), (55,
-            53), (56, 55), (57, 49), (58, 46), (59, 44), (60, 36), (61, 41), (62,
-            34), (63, 35), (64, 29), (65, 27), (66, 28), (67, 21), (68, 15), (69,
-            12)]
+        expected = [(0, 140),
+            (1, 137), (2, 133), (3, 128), (4, 126), (5, 129), (6, 127), (7, 127), (8, 121),
+            (9, 117), (10, 116), (11, 114), (12, 116), (13, 116), (14, 109), (15, 114), (16,
+            110), (17, 110), (18, 112), (19, 105), (20, 111), (21, 107), (22, 102), (23,
+            104), (24, 100), (25, 102), (26, 100), (27, 96), (28, 93), (29, 98), (30, 97),
+            (31, 93), (32, 90), (33, 86), (34, 82), (35, 80), (36, 78), (37, 79), (38, 74),
+            (39, 76), (40, 80), (41, 76), (42, 72), (43, 69), (44, 71), (45, 73), (46, 65),
+            (47, 66), (48, 63), (49, 58), (50, 55), (51, 54), (52, 52), (53, 47), (54, 49),
+            (55, 47), (56, 44), (57, 45), (58, 44), (59, 44), (60, 47), (61, 42), (62, 32),
+            (63, 34), (64, 29), (65, 30), (66, 27), (67, 29), (68, 24), (69, 9)
+        ]
         assert expected == result
 
     def test_random_BucketAverageHaloHash(self):

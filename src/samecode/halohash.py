@@ -471,9 +471,17 @@ class BaseBitMatrixHaloHash(BaseHaloHash):
         Return an iterable of the sum of bits for each column.
         """
         arrays = (bitarray_from_bytes(h.digest()) for h in self.hashes)
+        # reorg the bit matrix in columns
+        # TODO: numpy likely can sum columns alright
         transposed = izip(*arrays)
-        summed = imap(sum, transposed)
+        # we want a zero to substract 1 and a 1 to add 1 to our sum for a given bit column
+        normalized = (normalize(column) for column in transposed)
+        summed = imap(sum, normalized)
         return summed
+
+
+def normalize(iterable):
+    return (-1 if v else 1 for v in iterable)
 
 
 class BitAverageHaloHash(BaseBitMatrixHaloHash):
@@ -534,45 +542,45 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
     ... more larger than the smallest bit vector possible for intVal'''.split()
     >>> b = BitAverageHaloHash(z, size_in_bits=256)
     >>> a.distance(b)
-    61
+    57
     >>> b.distance(a)
-    61
+    57
     >>> a = BitAverageHaloHash(size_in_bits=160)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
     >>> a.hexdigest()
-    '536ed9cc6b29c38e0ae4c8a811be20d08c74a827'
+    '2c10223104c43470e10b1157e6415b2f730057d0'
     >>> b = BitAverageHaloHash(size_in_bits=160)
     >>> z = [b.update(x) for x in '''The value specified for size must be no
     ... more larger than the smallest bit vector possible for intVal'''.split()]
     >>> b.hexdigest()
-    'd36e994c2b30d1160b4409a8989a20700f7a280f'
+    '2c912433c4c624e0b03b34576641df8fe00017d0'
     >>> a.distance(b)
-    34
+    29
     >>> a = BitAverageHaloHash(size_in_bits=128)
     >>> z =[a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
     >>> a.hexdigest()
-    'f55469623f0a4cf3264099576c0a10ad'
+    '028b1699c0c5310cd1b566a893d12f10'
     >>> b = BitAverageHaloHash(size_in_bits=128)
     >>> z = [b.update(x) for x in '''The value specified for size must be no
     ... more larger than the smallest bit vector possible for intVal'''.split()]
     >>> b.hexdigest()
-    'f5c569669f2a04b22e409f43240e580f'
+    '0002969060d5b344d1b7602cd9e127b0'
     >>> a.distance(b)
-    24
+    27
     >>> a = BitAverageHaloHash(size_in_bits=64)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
     >>> a.hexdigest()
-    'f55469623f0a4cf3'
+    '028b1699c0c5310c'
     >>> b = BitAverageHaloHash(size_in_bits=64)
     >>> z = [b.update(x) for x in '''The value specified for size must be no
     ... more larger than the smallest bit vector possible for intVal'''.split()]
     >>> b.hexdigest()
-    'f5c569669f2a04b2'
+    '0002969060d5b344'
     >>> a.distance(b)
-    11
+    14
     >>> a = BitAverageHaloHash(size_in_bits=32)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
@@ -580,7 +588,7 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
     >>> z = [b.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible by intVal'''.split()]
     >>> a.distance(b)
-    3
+    5
     >>> a = BitAverageHaloHash(size_in_bits=512)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
@@ -588,7 +596,7 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
     >>> z = [b.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible by intVal'''.split()]
     >>> a.distance(b)
-    35
+    46
     """
     def compute(self):
         """
@@ -599,9 +607,18 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
         same.
         """
         col_sums = self.sum_columns()
-        mean = len(self.hashes) / 2
-        averaged = (total > mean for total in col_sums)
-        return bitarray(averaged)
+        return bitarray(compute_avg(col_sums))
+
+
+def compute_avg(col_sums):
+    """
+    Given an iterable of columns sums, yield an iteable of bits as 0 or 1
+    """
+    for col_sum in col_sums:
+        if col_sum > 0:
+            yield 1
+        else:
+            yield 0
 
 
 class BitQuartileHaloHash(BaseBitMatrixHaloHash):
@@ -663,19 +680,19 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
     ... more larger than the smallest bit vector possible for intVal'''.split()
     >>> b = BitQuartileHaloHash(z, size_in_bits=256)
     >>> a.distance(b)
-    66
+    16
     >>> b.distance(a)
-    66
+    16
     >>> a = BitQuartileHaloHash(size_in_bits=320)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
     >>> a.hexdigest()
-    'a64fadaaa6a6a5a9aa9a5a8aa59a95ae56a9aa65a9a9d9d556969aa99965a65595a5aeaa999559aa'
+    '042001000408020000101020002014004000000400001101041000010041040a2000000010080100'
     >>> b = BitQuartileHaloHash(size_in_bits=320)
     >>> z = [b.update(x) for x in '''The value specified for size must be no
     ... more larger than the smallest bit vector possible for intVal'''.split()]
     >>> a.distance(b)
-    70
+    35
     >>> a = BitQuartileHaloHash(size_in_bits=128)
     >>> z =[a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
@@ -683,9 +700,9 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
     >>> z = [b.update(x) for x in '''The value specified for size must be no
     ... more larger than the smallest bit vector possible for intVal'''.split()]
     >>> b.hexdigest()
-    'aaaaaaa6689669aa96aa199965a5da9a'
+    '00000000020000000000801100000010'
     >>> a.distance(b)
-    35
+    6
     >>> a = BitQuartileHaloHash(size_in_bits=64)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
@@ -693,7 +710,7 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
     >>> z = [b.update(x) for x in '''The value specified for size must be no
     ... more larger than the smallest bit vector possible for intVal'''.split()]
     >>> a.distance(b)
-    16
+    2
     >>> a = BitQuartileHaloHash(size_in_bits=32)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
@@ -701,7 +718,7 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
     >>> z = [b.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible by intVal'''.split()]
     >>> a.distance(b)
-    4
+    0
     >>> a = BitQuartileHaloHash(size_in_bits=512)
     >>> z = [a.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible for intVal'''.split()]
@@ -709,7 +726,7 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
     >>> z = [b.update(x) for x in '''The value specified for size must be at
     ... least as large as for the smallest bit vector possible by intVal'''.split()]
     >>> a.distance(b)
-    50
+    15
     """
 
     def __init__(self, msg=None, size_in_bits=128):
