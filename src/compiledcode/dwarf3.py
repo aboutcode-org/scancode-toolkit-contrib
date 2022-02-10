@@ -96,7 +96,7 @@ def get_source_file_path_references(location):
                 unique_paths.add(path)
     except Exception as lde:
         msg = str(lde)
-        errors.append(str)
+        errors.append(msg)
 
     seen_file_names = set(file_name(p) for p in unique_paths)
     for fn in unique_files:
