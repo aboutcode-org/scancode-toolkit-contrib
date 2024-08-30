@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 
 from __future__ import print_function, absolute_import
@@ -32,8 +32,10 @@ from commoncode import fileutils
 Parse generated make depend files to find sources corresponding binaries.
 """
 
+
 def is_make_depend(location):
     return location.endswith('.d')
+
 
 def parse(location):
     """
@@ -69,7 +71,7 @@ def parse(location):
                             if (f not in left_files
                                 and f != file_name
                                 and not f.endswith(file_name)
-                                and not f.endswith('.d')):
+                                    and not f.endswith('.d')):
                                 left_files.append(f)
 
                         lenf = len(left_files)

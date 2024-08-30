@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -52,7 +52,7 @@ def is_symbol_map(location):
 def parse(location):
     """
     Yield tuples of symbols extracted for a .symbolmap location. Symbol maps
-    are produced by GWT compilation. 
+    are produced by GWT compilation.
 
     See:
     http://code.google.com/p/google-web-toolkit/wiki/WebModeExceptions#Resymbolization_/_Deobfuscation
@@ -63,12 +63,12 @@ def parse(location):
     These files are like a CSV location with # python like comment lines.
 
     See as a good base to understand the format:
-    http://code.google.com/p/speedtracer/source/browse/trunk/src/client/ui/src/com/google/speedtracer/client/GwtSymbolMapParser.java?r=84 
+    http://code.google.com/p/speedtracer/source/browse/trunk/src/client/ui/src/com/google/speedtracer/client/GwtSymbolMapParser.java?r=84
 
     Another format is compressed: this is not handled here yet:
-    http://code.google.com/p/speedtracer/source/browse/trunk/src/client/ui/src/com/google/speedtracer/client/CompactGwtSymbolMapParser.java?spec=svn84&r=84 
+    http://code.google.com/p/speedtracer/source/browse/trunk/src/client/ui/src/com/google/speedtracer/client/CompactGwtSymbolMapParser.java?spec=svn84&r=84
 
-    See also for general JS map parsing: https://github.com/pombredanne/python-sourcemap-1/blob/master/smap.py 
+    See also for general JS map parsing: https://github.com/pombredanne/python-sourcemap-1/blob/master/smap.py
     """
     if is_symbol_map(location):
         with open(location, 'rU') as symap_file:
@@ -91,6 +91,6 @@ def parse(location):
                 # remove possible c: or drive name from windows paths. they
                 # are useless
                 clean_path = '/'.join([x for x in clean_path.split('/')
-                                             if ':' not in x])
+                                       if ':' not in x])
                 yield (gwts.jsName, gwts.jsniIdent, gwts.className,
                        gwts.memberName, clean_path, gwts.sourceLine)

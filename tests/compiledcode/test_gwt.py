@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -36,34 +36,34 @@ class TestGWT(FileBasedTesting):
     def test_parse_basic(self):
         test_file = self.get_test_loc('gwt/gwt.symbolMap')
         expected = [
-         ('GXT', '',
-          'com.extjs.gxt.ui.client.GXT', '',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '33'),
-         ('qc', 'com.extjs.gxt.ui.client.GXT::$clinit()V',
-          'com.extjs.gxt.ui.client.GXT', '$clinit',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '33'),
-         ('Nb', 'com.extjs.gxt.ui.client.GXT::BLANK_IMAGE_URL',
-          'com.extjs.gxt.ui.client.GXT', 'BLANK_IMAGE_URL',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '39'),
-         ('Ob', 'com.extjs.gxt.ui.client.GXT::IMAGES',
-          'com.extjs.gxt.ui.client.GXT', 'IMAGES',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '44'),
-         ('Pb', 'com.extjs.gxt.ui.client.GXT::SSL_SECURE_URL',
-          'com.extjs.gxt.ui.client.GXT', 'SSL_SECURE_URL',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '180'),
-         ('Qb', 'com.extjs.gxt.ui.client.GXT::ariaEnabled',
-          'com.extjs.gxt.ui.client.GXT', 'ariaEnabled',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '186'),
-         ('Rb', 'com.extjs.gxt.ui.client.GXT::defaultTheme',
-          'com.extjs.gxt.ui.client.GXT', 'defaultTheme',
-          '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
-          '187')
+            ('GXT', '',
+             'com.extjs.gxt.ui.client.GXT', '',
+             '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+             '33'),
+            ('qc', 'com.extjs.gxt.ui.client.GXT::$clinit()V',
+                'com.extjs.gxt.ui.client.GXT', '$clinit',
+                '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+                '33'),
+            ('Nb', 'com.extjs.gxt.ui.client.GXT::BLANK_IMAGE_URL',
+                'com.extjs.gxt.ui.client.GXT', 'BLANK_IMAGE_URL',
+                '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+                '39'),
+            ('Ob', 'com.extjs.gxt.ui.client.GXT::IMAGES',
+                'com.extjs.gxt.ui.client.GXT', 'IMAGES',
+                '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+                '44'),
+            ('Pb', 'com.extjs.gxt.ui.client.GXT::SSL_SECURE_URL',
+                'com.extjs.gxt.ui.client.GXT', 'SSL_SECURE_URL',
+                '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+                '180'),
+            ('Qb', 'com.extjs.gxt.ui.client.GXT::ariaEnabled',
+                'com.extjs.gxt.ui.client.GXT', 'ariaEnabled',
+                '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+                '186'),
+            ('Rb', 'com.extjs.gxt.ui.client.GXT::defaultTheme',
+                'com.extjs.gxt.ui.client.GXT', 'defaultTheme',
+                '/Views/zoro/lib/lib/gxt/gxt-2.2.6-gwt22.jar!/com/extjs/gxt/ui/client/GXT.java',
+                '187')
         ]
 
         result = list(gwt.parse(test_file))

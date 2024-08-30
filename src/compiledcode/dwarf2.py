@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 
 """
@@ -50,36 +50,36 @@ bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
 # 0804871c<space>T<space>_init<tab>/usr/src//glibc-2.6.1/cc-nptl/csu/crti.S:15
 def LINE_WITH_SOURCE_PATH():
     return re.compile(
-    r'^'
-    # the line starts with 8 or 16 hex chars
-    r'([0-9a-fA-F]{8}|[0-9a-fA-F]{16})'
-    r'\s'
-    # type of lines/symbol
-    r'(?P<type>[a-zA-Z])'
-    r'\s'
-    # symbol name
-    r'(?P<symbol>.*)'
-    # tab
-    r'\t'
-    # full path to source file
-    r'(?P<path>.*)'
-    r':'
-    r'(?P<linenum>\d*)'
-    r'$').match
+        r'^'
+        # the line starts with 8 or 16 hex chars
+        r'([0-9a-fA-F]{8}|[0-9a-fA-F]{16})'
+        r'\s'
+        # type of lines/symbol
+        r'(?P<type>[a-zA-Z])'
+        r'\s'
+        # symbol name
+        r'(?P<symbol>.*)'
+        # tab
+        r'\t'
+        # full path to source file
+        r'(?P<path>.*)'
+        r':'
+        r'(?P<linenum>\d*)'
+        r'$').match
 
 
 def POSSIBLE_SOURCE_PATH():
     return re.compile(
-    r'^'
-    # the line starts with 8 or 16 hex chars
-    r'([0-9a-fA-F]{8}|[0-9a-fA-F]{16})'
-    r'\s'
-    # type of lines/symbol
-    r'(?P<type>[a-zA-Z])'
-    r'\s'
-    # symbol name which is a path possibly
-    r'(?P<path>.*\.(c|cc|cpp|cxx|h|hh|hpp|hxx|i|m|y|s)?)'
-    r'$', re.IGNORECASE).match
+        r'^'
+        # the line starts with 8 or 16 hex chars
+        r'([0-9a-fA-F]{8}|[0-9a-fA-F]{16})'
+        r'\s'
+        # type of lines/symbol
+        r'(?P<type>[a-zA-Z])'
+        r'\s'
+        # symbol name which is a path possibly
+        r'(?P<path>.*\.(c|cc|cpp|cxx|h|hh|hpp|hxx|i|m|y|s)?)'
+        r'$', re.IGNORECASE).match
 
 
 def call_nm(elffile):
@@ -94,6 +94,7 @@ def call_nm(elffile):
 
 
 Entry = namedtuple('Entry', ['type', 'symbol', 'path', 'linenum'])
+
 
 def parse(location):
     """
@@ -136,6 +137,7 @@ def parse(location):
 
 # TODO: demangle symbols
 
+
 def get_dwarfs(location):
     """
     Yield tuples with debug information extracted from the DWARF
@@ -145,7 +147,7 @@ def get_dwarfs(location):
     Yields this tuple:
         (symbol_type, symbol, path_to_source, symbol_source_line)
     """
-    
+
     T = contenttype.get_type(location)
     if T.is_elf:
         rc, out, err = call_nm(location)

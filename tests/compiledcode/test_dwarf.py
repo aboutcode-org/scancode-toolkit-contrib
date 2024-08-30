@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -71,55 +71,74 @@ class TestDwarf(FileBasedTesting):
                 json.dump(result, exc, indent=2, encoding='utf-8')
 
         with open(expected_file, 'rb') as exc:
-            expected = json.load(exc, encoding='utf-8', object_pairs_hook=OrderedDict)
+            expected = json.load(exc, encoding='utf-8',
+                                 object_pairs_hook=OrderedDict)
 
-        assert sorted(expected['original_source_files']) == sorted(result['original_source_files'])
-        assert sorted(expected['included_source_files']) == sorted(result['included_source_files'])
+        assert sorted(expected['original_source_files']) == sorted(
+            result['original_source_files'])
+        assert sorted(expected['included_source_files']) == sorted(
+            result['included_source_files'])
 
     def test_dwarf_amd64_exec(self):
-        self.check_dwarf('dwarf/amd64_exec', 'dwarf/amd64_exec.dwarf.expected.json')
+        self.check_dwarf('dwarf/amd64_exec',
+                         'dwarf/amd64_exec.dwarf.expected.json')
 
     def test_dwarf_arm_exec(self):
-        self.check_dwarf('dwarf/arm_exec', 'dwarf/arm_exec.dwarf.expected.json')
+        self.check_dwarf('dwarf/arm_exec',
+                         'dwarf/arm_exec.dwarf.expected.json')
 
     def test_dwarf_arm_exec_nosect(self):
-        self.check_dwarf('dwarf/arm_exec_nosect', 'dwarf/arm_exec_nosect.dwarf.expected.json')
+        self.check_dwarf('dwarf/arm_exec_nosect',
+                         'dwarf/arm_exec_nosect.dwarf.expected.json')
 
     def test_dwarf_arm_gentoo_elf(self):
-        self.check_dwarf('dwarf/arm_gentoo_elf', 'dwarf/arm_gentoo_elf.dwarf.expected.json')
+        self.check_dwarf('dwarf/arm_gentoo_elf',
+                         'dwarf/arm_gentoo_elf.dwarf.expected.json')
 
     def test_dwarf_arm_object(self):
-        self.check_dwarf('dwarf/arm_object', 'dwarf/arm_object.dwarf.expected.json')
+        self.check_dwarf('dwarf/arm_object',
+                         'dwarf/arm_object.dwarf.expected.json')
 
     def test_dwarf_arm_scatter_load(self):
-        self.check_dwarf('dwarf/arm_scatter_load', 'dwarf/arm_scatter_load.dwarf.expected.json')
+        self.check_dwarf('dwarf/arm_scatter_load',
+                         'dwarf/arm_scatter_load.dwarf.expected.json')
 
     def test_dwarf_file_darwin_i386(self):
-        self.check_dwarf('dwarf/file.darwin.i386', 'dwarf/file.darwin.i386.dwarf.expected.json')
+        self.check_dwarf('dwarf/file.darwin.i386',
+                         'dwarf/file.darwin.i386.dwarf.expected.json')
 
     def test_dwarf_file_linux_i686(self):
-        self.check_dwarf('dwarf/file.linux.i686', 'dwarf/file.linux.i686.dwarf.expected.json')
+        self.check_dwarf('dwarf/file.linux.i686',
+                         'dwarf/file.linux.i686.dwarf.expected.json')
 
     def test_dwarf_file_linux_x86_64(self):
-        self.check_dwarf('dwarf/file.linux.x86_64', 'dwarf/file.linux.x86_64.dwarf.expected.json')
+        self.check_dwarf('dwarf/file.linux.x86_64',
+                         'dwarf/file.linux.x86_64.dwarf.expected.json')
 
     def test_dwarf_file_stripped(self):
-        self.check_dwarf('dwarf/file_stripped', 'dwarf/file_stripped.dwarf.expected.json')
+        self.check_dwarf('dwarf/file_stripped',
+                         'dwarf/file_stripped.dwarf.expected.json')
 
     def test_dwarf_ia32_exec(self):
-        self.check_dwarf('dwarf/ia32_exec', 'dwarf/ia32_exec.dwarf.expected.json')
+        self.check_dwarf('dwarf/ia32_exec',
+                         'dwarf/ia32_exec.dwarf.expected.json')
 
     def test_dwarf_ia64_exec(self):
-        self.check_dwarf('dwarf/ia64_exec', 'dwarf/ia64_exec.dwarf.expected.json')
+        self.check_dwarf('dwarf/ia64_exec',
+                         'dwarf/ia64_exec.dwarf.expected.json')
 
     def test_dwarf_libelf_begin_o(self):
-        self.check_dwarf('dwarf/libelf-begin.o', 'dwarf/libelf-begin.o.dwarf.expected.json')
+        self.check_dwarf('dwarf/libelf-begin.o',
+                         'dwarf/libelf-begin.o.dwarf.expected.json')
 
     def test_dwarf_shash_i686(self):
-        self.check_dwarf('dwarf/shash.i686', 'dwarf/shash.i686.dwarf.expected.json')
+        self.check_dwarf('dwarf/shash.i686',
+                         'dwarf/shash.i686.dwarf.expected.json')
 
     def test_dwarf_ssdeep_i686(self):
-        self.check_dwarf('dwarf/ssdeep.i686', 'dwarf/ssdeep.i686.dwarf.expected.json')
+        self.check_dwarf('dwarf/ssdeep.i686',
+                         'dwarf/ssdeep.i686.dwarf.expected.json')
 
     def test_dwarf_ssdeep_x86_64(self):
-        self.check_dwarf('dwarf/ssdeep.x86_64', 'dwarf/ssdeep.x86_64.dwarf.expected.json')
+        self.check_dwarf('dwarf/ssdeep.x86_64',
+                         'dwarf/ssdeep.x86_64.dwarf.expected.json')

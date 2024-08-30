@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -43,10 +43,12 @@ PERF_TEST_ENABLED = False
 
 class TestHalohash(FileBasedTesting):
     test_data_dir = os.path.join(os.path.dirname(__file__), 'data')
+
     def test_BaseHaloHash(self):
         class TestBaseHaloHash(halohash.BaseHaloHash):
             def __init__(self):
                 halohash.BaseHaloHash.__init__(self)
+
             def compute(self):
                 return bitarray([1] * len(self.hashes))
 
@@ -69,7 +71,8 @@ class TestHalohash(FileBasedTesting):
         class BaseBucketHaloHashSubclass(halohash.BaseBucketHaloHash):
 
             def __init__(self, size_in_bits):
-                halohash.BaseBucketHaloHash.__init__(self, size_in_bits=size_in_bits)
+                halohash.BaseBucketHaloHash.__init__(
+                    self, size_in_bits=size_in_bits)
 
             def compute(self):
                 return bitarray([1] * len(self.hashes))
@@ -101,7 +104,7 @@ class TestHalohash(FileBasedTesting):
 
         hashsize = 2 ** 7
         tbbhh = BaseBucketHaloHashSubclass(size_in_bits=hashsize)
-        tbbhh.update([ str(x) for x in range(1024)])
+        tbbhh.update([str(x) for x in range(1024)])
         buck = tbbhh.build_buckets()
         assert hashsize == len(buck)
 
@@ -184,7 +187,7 @@ class TestHalohash(FileBasedTesting):
             """
             Return a sequence of contiguous non-overlapping chunks of size n.
             """
-            return [seq[i : i + n] for i in range(len(seq))[::n]]
+            return [seq[i: i + n] for i in range(len(seq))[::n]]
 
         random1 = open(join(base, 'random1.txt'), 'rb').read()
         random_chunks_1 = chunks(random1, chunk_size)
@@ -211,31 +214,39 @@ class TestHalohash(FileBasedTesting):
         return res
 
     def test_random_BitAverageHaloHash(self):
-        result = self._random_HaloHash_test(halohash.BitAverageHaloHash, 256, 1000)
+        result = self._random_HaloHash_test(
+            halohash.BitAverageHaloHash, 256, 1000)
         expected = [(0, 140),
-            (1, 137), (2, 133), (3, 128), (4, 126), (5, 129), (6, 127), (7, 127), (8, 121),
-            (9, 117), (10, 116), (11, 114), (12, 116), (13, 116), (14, 109), (15, 114), (16,
-            110), (17, 110), (18, 112), (19, 105), (20, 111), (21, 107), (22, 102), (23,
-            104), (24, 100), (25, 102), (26, 100), (27, 96), (28, 93), (29, 98), (30, 97),
-            (31, 93), (32, 90), (33, 86), (34, 82), (35, 80), (36, 78), (37, 79), (38, 74),
-            (39, 76), (40, 80), (41, 76), (42, 72), (43, 69), (44, 71), (45, 73), (46, 65),
-            (47, 66), (48, 63), (49, 58), (50, 55), (51, 54), (52, 52), (53, 47), (54, 49),
-            (55, 47), (56, 44), (57, 45), (58, 44), (59, 44), (60, 47), (61, 42), (62, 32),
-            (63, 34), (64, 29), (65, 30), (66, 27), (67, 29), (68, 24), (69, 9)
-        ]
+                    (1, 137), (2, 133), (3, 128), (4, 126), (5,
+                                                             129), (6, 127), (7, 127), (8, 121),
+                    (9, 117), (10, 116), (11, 114), (12, 116), (13, 116), (14, 109), (15, 114), (16,
+                                                                                                 110), (17, 110), (18, 112), (19, 105), (20, 111), (21, 107), (22, 102), (23,
+                                                                                                                                                                          104), (24, 100), (25, 102), (26, 100), (27, 96), (28, 93), (29, 98), (30, 97),
+                    (31, 93), (32, 90), (33, 86), (34, 82), (35,
+                                                             80), (36, 78), (37, 79), (38, 74),
+                    (39, 76), (40, 80), (41, 76), (42, 72), (43,
+                                                             69), (44, 71), (45, 73), (46, 65),
+                    (47, 66), (48, 63), (49, 58), (50, 55), (51,
+                                                             54), (52, 52), (53, 47), (54, 49),
+                    (55, 47), (56, 44), (57, 45), (58, 44), (59,
+                                                             44), (60, 47), (61, 42), (62, 32),
+                    (63, 34), (64, 29), (65, 30), (66,
+                                                   27), (67, 29), (68, 24), (69, 9)
+                    ]
         assert expected == result
 
     def test_random_BucketAverageHaloHash(self):
-        result = self._random_HaloHash_test(halohash.BucketAverageHaloHash, 256, 1000)
+        result = self._random_HaloHash_test(
+            halohash.BucketAverageHaloHash, 256, 1000)
         expected = [
             (0, 54), (1, 52), (2, 51), (3, 50), (4, 49), (5, 47), (6, 46), (7, 47),
             (8, 45), (9, 44), (10, 43), (11, 42), (12, 42), (13, 42), (14, 41), (15,
-            41), (16, 40), (17, 38), (18, 38), (19, 38), (20, 36), (21, 35), (22,
-            34), (23, 33), (24, 33), (25, 32), (26, 31), (27, 33), (28, 33), (29,
-            31), (30, 31), (31, 29), (32, 29), (33, 27), (34, 28), (35, 28), (36,
-            28), (37, 27), (38, 25), (39, 23), (40, 22), (41, 21), (42, 20), (43,
-            18), (44, 18), (45, 17), (46, 16), (47, 16), (48, 16), (49, 16), (50,
-            14), (51, 13), (52, 13), (53, 12), (54, 12), (55, 11), (56, 10), (57, 9),
+                                                                                 41), (16, 40), (17, 38), (18, 38), (19, 38), (20, 36), (21, 35), (22,
+                                                                                                                                                   34), (23, 33), (24, 33), (25, 32), (26, 31), (27, 33), (28, 33), (29,
+                                                                                                                                                                                                                     31), (30, 31), (31, 29), (32, 29), (33, 27), (34, 28), (35, 28), (36,
+                                                                                                                                                                                                                                                                                       28), (37, 27), (38, 25), (39, 23), (40, 22), (41, 21), (42, 20), (43,
+                                                                                                                                                                                                                                                                                                                                                         18), (44, 18), (45, 17), (46, 16), (47, 16), (48, 16), (49, 16), (50,
+                                                                                                                                                                                                                                                                                                                                                                                                                           14), (51, 13), (52, 13), (53, 12), (54, 12), (55, 11), (56, 10), (57, 9),
             (58, 9), (59, 7), (60, 5), (61, 4), (62, 4), (63, 4), (64, 3), (65, 2),
             (66, 2), (67, 1), (68, 0), (69, 0)]
         assert expected == result
@@ -247,7 +258,6 @@ if PERF_TEST_ENABLED:
         import numpy
     except ImportError:
         numpy = None
-
 
     @skipUnless(PERF_TEST_ENABLED, 'Perf test disabled')
     class TestBitAvgHaloHashPerformance(FileBasedTesting):
@@ -261,7 +271,7 @@ if PERF_TEST_ENABLED:
         a.update("/project/path/test/a/" + str(x))
     b = a.hexdigest()
     ''',
-                        globals(), locals(), stats)
+                           globals(), locals(), stats)
             p = pstats.Stats(stats)
             p.sort_stats('cumulative').print_stats(100)
             os.remove(stats)
@@ -286,6 +296,7 @@ if PERF_TEST_ENABLED:
         def test_optimization_hashup_using_map_no_numpy(self):
             from operator import add
             # NOTE: this twice slower than numpy
+
             class OptimizedBitAvgHaloHashMap(halohash.BitAverageHaloHash):
                 def __hashup__(self, m):
                     h = self.hashmodule(m)
@@ -303,6 +314,7 @@ if PERF_TEST_ENABLED:
             # because of the hashes accumulation
             # we consume iterators now and then to keep the memory consumption low
             from itertools import izip, imap
+
             class OptimizedBitAvgHaloHashMapDelayed(halohash.BitAverageHaloHash):
                 def __init__(self, msg=None, size_in_bits=128):
                     halohash.BaseHaloHash.__init__(self)
@@ -311,10 +323,11 @@ if PERF_TEST_ENABLED:
                     self.hashes = []
                     self.hashed_elements = 0
                     try:
-                        self.hashmodule = commoncode.hash.get_hasher(size_in_bits)
+                        self.hashmodule = commoncode.hash.get_hasher(
+                            size_in_bits)
                     except:
                         msg = ('No available hash module for the requested hash '
-                             'size in bits: %(size_in_bits)d' % locals())
+                               'size in bits: %(size_in_bits)d' % locals())
                         raise Exception(msg)
                     self.update(msg)
 
@@ -364,9 +377,9 @@ if PERF_TEST_ENABLED:
                     ba = bitarray()
                     ba.fromstring(h.digest())
                     self.hashes = (numpy.vstack(
-                                    (self.hashes,
-                                     numpy.asarray(ba.tolist())))
-                                   .sum(axis=0))
+                        (self.hashes,
+                         numpy.asarray(ba.tolist())))
+                        .sum(axis=0))
                     self.hashed_elements += 1
 
             a = OptimizedBitAvgHaloHash(None, size_in_bits=512)
@@ -377,6 +390,7 @@ if PERF_TEST_ENABLED:
         def test_optimization_2_numpy_bit_avg(self):
             class OptimizedBitAvgHaloHash2(halohash.BitAverageHaloHash):
                 vectors = []
+
                 def __hashup__(self, m):
                     if self.hashes == []:
                         self.hashes = [0] * self.size_in_bits
@@ -389,7 +403,8 @@ if PERF_TEST_ENABLED:
                     self.hashed_elements += 1
 
                     if self.hashed_elements % 100 == 0:
-                        self.hashes = numpy.vstack((self.hashes, numpy.vstack(tuple(self.vectors)))).sum(axis=0)
+                        self.hashes = numpy.vstack(
+                            (self.hashes, numpy.vstack(tuple(self.vectors)))).sum(axis=0)
                         self.vectors = []
 
             a = OptimizedBitAvgHaloHash2(None, size_in_bits=512)
@@ -400,6 +415,7 @@ if PERF_TEST_ENABLED:
         def test_optimization_3_numpy_bit_avg(self):
             class OptimizedBitAvgHaloHash3(halohash.BitAverageHaloHash):
                 vectors = []
+
                 def __hashup__(self, m):
                     if self.hashes == []:
                         self.hashes = [0] * self.size_in_bits
@@ -411,7 +427,8 @@ if PERF_TEST_ENABLED:
 
                     if self.hashed_elements % 100 == 0:
                         s = numpy.cumsum(self.vectors, axis=0)
-                        self.hashes = numpy.vstack((self.hashes, s)).sum(axis=0)
+                        self.hashes = numpy.vstack(
+                            (self.hashes, s)).sum(axis=0)
                         self.vectors = []
 
             a = OptimizedBitAvgHaloHash3(None, size_in_bits=512)
@@ -422,6 +439,7 @@ if PERF_TEST_ENABLED:
         def test_optimization_4_numpy_bit_avg(self):
             class OptimizedBitAvgHaloHash4(halohash.BitAverageHaloHash):
                 vectors = []
+
                 def __hashup__(self, m):
                     if self.hashes == []:
                         self.hashes = [0] * self.size_in_bits
@@ -446,6 +464,7 @@ if PERF_TEST_ENABLED:
         def test_optimization_5_native_arrays(self):
             class OptimizedBitAvgHaloHash5(halohash.BitAverageHaloHash):
                 vectors = []
+
                 def __hashup__(self, m):
                     if self.hashes == []:
                         self.hashes = [0] * self.size_in_bits

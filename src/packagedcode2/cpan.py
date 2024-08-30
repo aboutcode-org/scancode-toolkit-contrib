@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -55,7 +55,7 @@ CPAN_LICENSES = {
     'sun': 'Sun Internet Standards Source License (SISSL)',
     'zlib': 'zlib License',
 
-# The following license strings are also valid and indicate other licensing not described above:',
+    # The following license strings are also valid and indicate other licensing not described above:',
     'open_source': 'Other Open Source Initiative (OSI) approved license',
     'restricted': 'Requires special permission from copyright holder',
     'unrestricted': 'Not an OSI approved license, but not restricted',
@@ -88,8 +88,8 @@ LICENSE_MAPPING = {
     'sun': 'sissl-1.0',
     'zlib': 'zlib',
 
-# The following license strings are also valid and indicate other licensing not described above:
-# FIXME: find a better mapping, or create scancode keys as needed
+    # The following license strings are also valid and indicate other licensing not described above:
+    # FIXME: find a better mapping, or create scancode keys as needed
     'open_source': 'open-source',
     'restricted': 'restricted',
     'unrestricted': 'unrestricted',

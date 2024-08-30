@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,10 +20,10 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 
-""" 
+"""
 A set of functions and objects to extract information from binary Elf files
 DWARF debug data.
 """
@@ -52,14 +52,18 @@ def EMPTY_LINE_RE():
 def DCOMP_UNIT_START_RE():
     return re.compile("^COMPILE_UNIT<header overall offset =.*$")
 
+
 def DCMPDIR_RE():
     return re.compile(r"^DW_AT_comp_dir\s*(.*)$")
+
 
 def DCMPDIR_FILE_RE():
     return re.compile(r"^DW_AT_name\s*(.*)$")
 
+
 def DLOCAL_SYMBOLS_RE():
     return re.compile(r"^LOCAL_SYMBOLS:$")
+
 
 def DWARF_FILES_RE():
     return re.compile(r"^DW_AT_(?:decl|call)_file\s*\d*\s*(.*)$")
@@ -81,7 +85,7 @@ class Dwarf(object):
 
         # Source files that were compiled and linked implicitly from the
         # standard library or by the toolchain when this Elf was created.
-       
+
         # These files may vary from platform to platform and version of the Gnu
         # toolchain. They are not always relevant from an interaction perspective
         # except in a few cases, such as LKM.
@@ -121,21 +125,21 @@ class Dwarf(object):
         original, std_includes = cleanup(self._files)
 
         self.included_source_files.extend(x for x in std_includes
-            if x not in self.included_source_files)
+                                          if x not in self.included_source_files)
 
         self.original_source_files.extend(x for x in original
-            if x not in self.original_source_files)
+                                          if x not in self.original_source_files)
 
     def asdict(self):
         return OrderedDict([
-            ('original_source_files', self.original_source_files), 
+            ('original_source_files', self.original_source_files),
             ('included_source_files', self.included_source_files)
         ])
-        
+
 
 def cleanup(paths):
     """
-    Given a list of paths, returns two lists: a list of paths likely to be 
+    Given a list of paths, returns two lists: a list of paths likely to be
     original code and a list of paths likely to be standard includes.
     """
     # TODO: mostly copied from dwarf.Dwarf._cleanup ...
@@ -150,7 +154,6 @@ def cleanup(paths):
         else:
             original.append(p)
     return original, std_includes
-
 
 
 class DwarfInfo(object):
@@ -171,7 +174,7 @@ class DwarfInfo(object):
     <1><   37>      DW_TAG_base_type
                     DW_AT_byte_size             4
                     DW_AT_encoding              DW_ATE_unsigned
-                    DW_AT_name                  unsigned int    
+                    DW_AT_name                  unsigned int
     <1><  122>      DW_TAG_typedef
                     DW_AT_name                  __off_t
                     DW_AT_decl_file             4 /usr/include/bits/types.h
@@ -202,7 +205,7 @@ class DwarfInfo(object):
                     DW_AT_name                  _IO_FILE
                     DW_AT_byte_size             148
                     DW_AT_decl_file             6 /usr/include/stdio.h
-                    DW_AT_decl_line             45                    
+                    DW_AT_decl_line             45
     <2>< 1429>      DW_TAG_inlined_subroutine
                     DW_AT_abstract_origin       <1125>
                     DW_AT_ranges                32
@@ -219,6 +222,7 @@ class DwarfInfo(object):
     <3>< 1449>      DW_TAG_formal_parameter
                     DW_AT_abstract_origin       <1147>
     """
+
     def __init__(self):
         self.dwarfdump_option = "-l"
         self.start_re = DCOMP_UNIT_START_RE()
@@ -244,7 +248,8 @@ class DwarfInfo(object):
         if posixpath.isabs(self.cu_filename):
             dwarf._files.append(self.cu_filename)
         else:
-            dwarf._files.append(posixpath.join(self.cu_comp_dir, self.cu_filename))
+            dwarf._files.append(posixpath.join(
+                self.cu_comp_dir, self.cu_filename))
 
         dwarf._files.extend(self.files)
 
@@ -259,4 +264,5 @@ class DwarfInfo(object):
                 if posixpath.isabs(filename):
                     self.files.append(filename)
                 else:
-                    self.files.append(posixpath.join(self.cu_comp_dir, filename))
+                    self.files.append(posixpath.join(
+                        self.cu_comp_dir, filename))

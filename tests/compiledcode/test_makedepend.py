@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -38,17 +38,17 @@ class TestMakeDepend(FileBasedTesting):
         obj_path, src_paths = makedepend.parse(test_file)
         assert 'addrutil.o' == obj_path
         expected_paths = [
-                        '/test/ram/../../Common/Src/addrutil.c',
-                        '/test/ram/../../Common/Inc/buildmode.h',
-                        '/test/ram/../../Common/Inc/dct_types.h',
-                        '/test/ram/../../Common/Inc/mostypes.h',
-                        '/test/ram/../../Common/Inc/memutil.h',
-                        '/test/ram/../../Common/Inc/addrutil.h',
-                        '/test/ram/../../Common/Inc/hwdevices.h',
-                        '/test/ram/../../Common/Inc/tsic.h',
-                        '/test/ram/../../Common/Inc/pltcfg.h',
-                        '/test/ram/../../Common/Inc/dct_debug.h'
-                          ]
+            '/test/ram/../../Common/Src/addrutil.c',
+            '/test/ram/../../Common/Inc/buildmode.h',
+            '/test/ram/../../Common/Inc/dct_types.h',
+            '/test/ram/../../Common/Inc/mostypes.h',
+            '/test/ram/../../Common/Inc/memutil.h',
+            '/test/ram/../../Common/Inc/addrutil.h',
+            '/test/ram/../../Common/Inc/hwdevices.h',
+            '/test/ram/../../Common/Inc/tsic.h',
+            '/test/ram/../../Common/Inc/pltcfg.h',
+            '/test/ram/../../Common/Inc/dct_debug.h'
+        ]
         assert expected_paths == src_paths
 
     def test_parse_d_file(self):
@@ -58,7 +58,8 @@ class TestMakeDepend(FileBasedTesting):
         expected = '/home/code/app/base/obj/os/fulcrum/src/string2key.o'
         assert expected, obj_path
 
-        expected = self.get_test_loc('makedepend/d_dep_files/string2key.expected')
+        expected = self.get_test_loc(
+            'makedepend/d_dep_files/string2key.expected')
         expected_paths = open(expected).read().splitlines(False)
         assert expected_paths == src_paths
 
@@ -67,7 +68,8 @@ class TestMakeDepend(FileBasedTesting):
         obj_path, src_paths = makedepend.parse(test_file)
 
         assert 'XmlHelper.o' == obj_path
-        expected = self.get_test_loc('makedepend/d_dep_files2/XmlHelper.expected')
+        expected = self.get_test_loc(
+            'makedepend/d_dep_files2/XmlHelper.expected')
         #         with open(expected, 'wb') as out:
         #             out.write('\n'.join(src_paths))
         expected_paths = open(expected).read().splitlines(False)

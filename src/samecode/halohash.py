@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function, division
 
@@ -93,7 +93,7 @@ Bit matrix:
 The bit matrix hashes use a bit matrix representation of all the hashes of the
 feature, where each row is a feature and each column a bit in the hash for this
 feature. For each column of that matrix it computes the sum and then compare
-this to averages or quartiles. 
+this to averages or quartiles.
 
 It starts by hashing each feature in the input. The size of these hashes
 determines the size of the resulting hash. (i.e. a 128 bits hash function will
@@ -148,7 +148,7 @@ accuracy can be tuned after hashing.
 
 For instance , with a 512 bits bit average hash, you could use the first 32 bits
 or last 64 bits for doing initial crude exact matches, then doing a pair wise
-hamming distance computation only for the smaller number of matching pairs. 
+hamming distance computation only for the smaller number of matching pairs.
 
 For the bucket hash, the matching can be based on hash table lookups, where
 the key contains the individual hashes of each buckets in a hash, and the value
@@ -193,6 +193,7 @@ class BaseHaloHash(object):
     """
     Base class for hashes.
     """
+
     def __init__(self):
         self.hashes = []
         self.hashmodule = lambda x: x
@@ -266,6 +267,7 @@ class BaseBucketHaloHash(BaseHaloHash):
     """
     Base class for bucket hashes.
     """
+
     def __init__(self, msg=None, size_in_bits=32):
         """
         Size in bits must be a power of two.
@@ -431,6 +433,7 @@ class BucketAverageHaloHash(BaseBucketHaloHash):
     >>> a.distance(b)
     4
     """
+
     def compute(self):
         """
         Compute the bucket average hash and return a bit array.
@@ -456,6 +459,7 @@ class BaseBitMatrixHaloHash(BaseHaloHash):
     """
     Base class for hash using bit matrices.
     """
+
     def __init__(self, msg=None, size_in_bits=128):
         super(BaseBitMatrixHaloHash, self).__init__()
         try:
@@ -491,18 +495,18 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
     The high level processing sketch looks like this:
     For an input of:
         ['this' ,'is', 'a', 'rose', 'great']:
-    
+
     * we first hash each list item to get something like
         [4, 15, 2, 12, 12] (for instance with a very short hash function of 4 bits output)
-    
+
     or as bits this would be something like this:
-    
+
           ['0011',
            '1110',
            '0010',
            '1100',
            '1100']
-    
+
     * we sum up each bit positions/columns together:
           ['0011',
            '1110',
@@ -511,22 +515,22 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
            '1100']
            -------
             3331
-    
+
     or stated otherwise: pos1=3, pos2=3, pos3=3, pos4=1
-    
+
     * The mean value for a column is number of hashes/2 (2 because we use bits).
       Here mean = 5 hashes/2 = 2.5
-    
+
     * We compare the sum of each position with the mean and yield a bit:
         if pos sum > mean yield 1 else yield 0
             position1 = 3 > mean = 2.5 , then bit=1
             position2 = 3 > mean = 2.5 , then bit=1
             position3 = 3 > mean = 2.5 , then bit=1
             position4 = 1 < mean = 2.5 , then bit=0
-    
+
     * We build a hash by concatenating the resulting bits:
          pos 1 + pos2 + pos3 + pos4 = '1110'
-    
+
     In general, this hash seems to show a lower accuracy and higher sensitivity
     with small string and small inputs variations than the bucket average hash.
     But it works better on shorter inputs.
@@ -598,6 +602,7 @@ class BitAverageHaloHash(BaseBitMatrixHaloHash):
     >>> a.distance(b)
     46
     """
+
     def compute(self):
         """
         Compute the hash and return a bit array representing it.
@@ -628,18 +633,18 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
     The high level processing sketch looks like this:
     For an input of:
         ['this' ,'is', 'a', 'rose', 'great']:
-    
+
     * we first hash each list item to get something like
         [4, 15, 2, 12, 12] (for instance with a very short hash function of 4 bits output)
-    
+
     or as bits this would be something like this:
-    
+
           ['0011',
            '1110',
            '0010',
            '1100',
            '1100']
-    
+
     * for each position, we compute the sum of the bit in that column:
           ['0011',
            '1110',
@@ -648,26 +653,26 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
            '1100']
            -------
             3331
-    
+
     or stated otherwise: pos1=3, pos2=3, pos3=3, pos4=1
-    
+
     * Based on the number of items we define the four quartiles rounded down.
       Here we have 5 items, so each quartile is for values:
       - 0 <= Q1 <= 1
       - 1 <  Q2 <= 2
       - 2 <  Q3 <= 3
       - 3 <  Q4
-      
+
     * The sum of each column quartile yields a two bit value:
      - Q1: 00
      - Q2: 01
      - Q3: 10
      - Q4: 11
-     
+
     * We build a hash by concatenating the resulting bits:
          pos 1 + pos2 + pos3 + pos4 = '1110'
       Here for 3331 this yields: 11 11 11 00
-    
+
     Some usage examples:
     Some usage examples:
 
@@ -731,7 +736,8 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
 
     def __init__(self, msg=None, size_in_bits=128):
         # we use 2 bits per column, so we use half the size for hashing
-        super(BitQuartileHaloHash, self).__init__(msg, size_in_bits=size_in_bits / 2)
+        super(BitQuartileHaloHash, self).__init__(
+            msg, size_in_bits=size_in_bits / 2)
         # but we will still return the proper size
         self.digest_size = size_in_bits // 8
         self.size_in_bits = size_in_bits
@@ -777,7 +783,7 @@ class BitQuartileHaloHash(BaseBitMatrixHaloHash):
 
 def bitarray_from_bytes(b):
     """
-    Return a bitarray built from a byte string b. 
+    Return a bitarray built from a byte string b.
     """
     a = bitarray()
     a.frombytes(b)
@@ -829,7 +835,8 @@ def slices(s, size):
     ...    pass
     """
     length = len(s)
-    assert length % size == 0, 'Invalid slice size: len(%(s)r) is not a multiple of %(size)r' % locals()
+    assert length % size == 0, 'Invalid slice size: len(%(s)r) is not a multiple of %(size)r' % locals(
+    )
     # TODO: time alternative
     # return [s[index:index + size] for index in range(0, length, size)]
     chunks = [iter(s)] * size
@@ -864,7 +871,7 @@ def common_chunks(h1, h2, chunk_bytes_length=4):
 def bit_to_num(bits):
     """
     Return an int (or long) for a bit array.
-    
+
     For example:
     TODO: test
     """

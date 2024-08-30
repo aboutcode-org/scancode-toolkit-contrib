@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -51,7 +51,8 @@ class TestElf(FileBasedTesting):
 
     def test_demangle_chunk_3(self):
         expected = ['CContainer::ProcessChildSendNotifyInfo']
-        result = demangle_chunk(['_ZN10CContainer26ProcessChildSendNotifyInfoElPcRtRlRdRS0_lPP9CCallbackPP9CTriggers'])
+        result = demangle_chunk(
+            ['_ZN10CContainer26ProcessChildSendNotifyInfoElPcRtRlRdRS0_lPP9CCallbackPP9CTriggers'])
         assert expected == result
 
     def test_demangle_chunk_4(self):
@@ -71,14 +72,15 @@ class TestElf(FileBasedTesting):
     def test_demangle_chunk_5(self):
         expected = []
         result = demangle_chunk([
-                     '_GLOBAL__I_main',
-                     '_Z41__static_initialization_and_destruction_0ii',
-                     '__tcf_0'])
+            '_GLOBAL__I_main',
+            '_Z41__static_initialization_and_destruction_0ii',
+            '__tcf_0'])
         assert expected == result
 
     def test_demangle(self):
         expected = ['CContainer::ProcessChildSendNotifyInfo']
-        test = ['_ZN10CContainer26ProcessChildSendNotifyInfoElPcRtRlRdRS0_lPP9CCallbackPP9CTriggers'] * 317
+        test = [
+            '_ZN10CContainer26ProcessChildSendNotifyInfoElPcRtRlRdRS0_lPP9CCallbackPP9CTriggers'] * 317
         assert set(expected) == set(demangle(test))
 
     def test_needed_libraries_1(self):
@@ -191,7 +193,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_arm_gentoo_elf(self):
         test_file = self.get_test_loc('dwarf/arm_gentoo_elf')
-        expected_file = self.get_test_loc('dwarf/arm_gentoo_elf.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/arm_gentoo_elf.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -202,7 +205,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_misc_elfs_cpp_test_o(self):
         test_file = self.get_test_loc('misc_elfs/cpp-test.o')
-        expected_file = self.get_test_loc('misc_elfs/cpp-test.o.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'misc_elfs/cpp-test.o.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -213,7 +217,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_ssdeep_x86_64(self):
         test_file = self.get_test_loc('dwarf/ssdeep.x86_64')
-        expected_file = self.get_test_loc('dwarf/ssdeep.x86_64.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/ssdeep.x86_64.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -224,8 +229,10 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_elf_libelf_so(self):
         test_file = self.get_test_loc('elf/libelf.so')
-        expected_file1 = self.get_test_loc('elf/libelf.so.expected_elf_symbols')
-        expected_file2 = self.get_test_loc('elf/libelf.so.expected_elf_relocatable_symbols')
+        expected_file1 = self.get_test_loc(
+            'elf/libelf.so.expected_elf_symbols')
+        expected_file2 = self.get_test_loc(
+            'elf/libelf.so.expected_elf_relocatable_symbols')
         with codecs.open(expected_file1, encoding='utf-8') as expect1:
             expected1 = json.load(expect1)
         elf = Elf(test_file)
@@ -243,7 +250,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_ssdeep_i686(self):
         test_file = self.get_test_loc('dwarf/ssdeep.i686')
-        expected_file = self.get_test_loc('dwarf/ssdeep.i686.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/ssdeep.i686.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -254,7 +262,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_arm_object(self):
         test_file = self.get_test_loc('dwarf/arm_object')
-        expected_file = self.get_test_loc('dwarf/arm_object.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/arm_object.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -265,7 +274,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_arm_scatter_load(self):
         test_file = self.get_test_loc('dwarf/arm_scatter_load')
-        expected_file = self.get_test_loc('dwarf/arm_scatter_load.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/arm_scatter_load.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -276,7 +286,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_shash_i686(self):
         test_file = self.get_test_loc('dwarf/shash.i686')
-        expected_file = self.get_test_loc('dwarf/shash.i686.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/shash.i686.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -287,7 +298,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_libelf_begin_o(self):
         test_file = self.get_test_loc('dwarf/libelf-begin.o')
-        expected_file = self.get_test_loc('dwarf/libelf-begin.o.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/libelf-begin.o.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)
@@ -298,7 +310,8 @@ class TestElf(FileBasedTesting):
 
     def test_elf_symbols_dwarf_arm_exec(self):
         test_file = self.get_test_loc('dwarf/arm_exec')
-        expected_file = self.get_test_loc('dwarf/arm_exec.expected_elf_symbols')
+        expected_file = self.get_test_loc(
+            'dwarf/arm_exec.expected_elf_symbols')
         with codecs.open(expected_file, encoding='utf-8') as expect:
             expected = json.load(expect)
         elf = Elf(test_file)

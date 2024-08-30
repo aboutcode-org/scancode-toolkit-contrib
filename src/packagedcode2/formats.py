@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,8 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
-
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 
 """
@@ -31,14 +30,14 @@ https://en.wikipedia.org/wiki/Package_format
 """
 package_formats = {
 
-# mainline distros
+    # mainline distros
     'rpm': ('RPM (Linux)', ''),
     # 'rpm_spec': ('RPM spec file (Linux)', ''),
     'deb': ('Debian (Linux)', ''),
     # 'deb_control': ('Debian control file (Linux)', ''),
 
 
-# java
+    # java
     'pom': ('Maven POM (Java)', ''),
     'ivy': ('IVY (Java)', ''),
     'gradle': ('gradle (Groovy/Java)', 'https://gradle.org/'),
@@ -52,27 +51,27 @@ package_formats = {
     'netbeans': ('NetBeans plugin (NetBeans)', ''),
     'jenkins': ('Jenkins plugin (Jenkins)', ''),
 
-# linux
+    # linux
     'lkm': ('Loadable Kernel Module (Linux)', ''),
 
-# Perl
+    # Perl
     'cpan': ('CPAN (Perl)', ''),
 
-# ruby
+    # ruby
     'gem': ('RubyGems (Ruby)', ''),
     'gemfile': ('Bundler Gemfile/Gemfile.lock (Ruby)', ''),
     'gemspec': ('RubyGem gemspec file (Ruby)', ''),
 
-# JS
+    # JS
     'npm': ('npm (JavaScript)', ''),
     'jspm': ('jspm (JavaScript)', ''),
     'bower': ('Bower (JavaScript)', ''),
 
-# php
+    # php
     'pear': ('PEAR (PHP)', ''),
     'composer': ('Composer (PHP)', ''),
 
-# python
+    # python
     'setup.py': ('Python package (Python)', ''),
     'sdist': ('PyPI (Python)', ''),
     'bdist': ('PyPI (Python)', ''),
@@ -81,35 +80,35 @@ package_formats = {
     'egg': ('Egg (Python)', ''),
     'wheel': ('Wheel (Python)', ''),
 
-# windows
+    # windows
     'nuget': ('NuGet (.NET)', ''),
 
-# exes
+    # exes
     'winpe': ('PE Binary (Windows)', ''),
     'elf': ('ELF binaries (POSIX)', ''),
     'macho': ('Mach-O binaries (MacOSX)', ''),
 
-# installers
+    # installers
     'mpkg': ('Apple m/package (MacOSX)', ''),
     'msi': ('Windows installer (Windows)', ''),
 
 
-# mobile
+    # mobile
     'ipa': ('.ipa (iOS)', ''),
     'apk': ('.apk (Android)', ''),
     'modlic': ('MODULE_LICENSE (Android)', ''),
 
-# Go
+    # Go
     'godoc': ('GoDoc (Go)', ''),
     'godep': ('Godep (Go)', 'https://github.com/tools/godep'),
-# less common
+    # less common
     'gom': ('Gom (Go)', ''),
     'gondler': ('Gondler (Go)', ''),
     'goop': ('Goop (Go)', ''),
     'dondur': ('dondur (Go)', 'https://github.com/oguzbilgic/dondur'),
 
-# less common
-    'buildout':('buildout (Python)', ''),
+    # less common
+    'buildout': ('buildout (Python)', ''),
     'about': ('AboutCode', 'http://aboutcode.org'),
     'freebsd': ('FreeBSD ports (Unix)', ''),
     'openbsd': ('OpenBSD ports (Unix)', ''),
@@ -131,7 +130,7 @@ package_formats = {
     'slack': ('Slackware (Linux)', ''),
     'solaris': ('Solaris (Unix)', ''),
 
-    'cran': ('CRAN (R)' , ''),
+    'cran': ('CRAN (R)', ''),
     'mix': ('Mix (Elixir/Erlang)', 'http://Hex.pm',),
     'melpa': ('MELPA (Emacs)', ''),
     'cabal': ('Cabal (Haskell)', ''),

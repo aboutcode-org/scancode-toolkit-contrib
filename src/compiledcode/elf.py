@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -44,7 +44,7 @@ bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
 
 def next_line(file_desc):
     try:
-        return  file_desc.next()
+        return file_desc.next()
     except:
         return None
 
@@ -62,17 +62,19 @@ class Elf(object):
     Represents an Elf object
     http://en.wikipedia.org/wiki/Executable_and_Linkable_Format
     """
+
     def __init__(self, location):
         # Dynamic libraries needed by this Elf at runtime
         self.needed_libraries = set()
 
         # Symbols is an instance of ElfSymbolsTableSection
         self.symbols_section = ElfSymbolsTableSection()
-	self.relocatable_section = ElfRelocatablesSection()
+        self.relocatable_section = ElfRelocatablesSection()
         self.files = self.symbols_section.files
 
         # sections parsers
-        self.readelf_sections = [ElfDynamicSection(), self.relocatable_section, self.symbols_section]
+        self.readelf_sections = [
+            ElfDynamicSection(), self.relocatable_section, self.symbols_section]
         self.handlers = {}
         self.readelf_options = []
         # The elf location
@@ -87,11 +89,11 @@ class Elf(object):
 
     def symbols(self):
         return sorted(flatten([list(self.symbols_section.local_functions),
-                        list(self.symbols_section.global_functions)]))
+                               list(self.symbols_section.global_functions)]))
 
     def setup_handlers(self):
         self.readelf_options = set([s.readelf_option
-                                     for s in self.readelf_sections])
+                                    for s in self.readelf_sections])
         for s in self.readelf_sections:
             self.handlers[s.start_re] = s
 
@@ -143,6 +145,8 @@ def DYNAMIC_START_RE():
 
 # 0x00000001 (NEEDED)                     Shared library: [libc.so.6]
 # 0x00000001 (NEEDED)                     Shared library: [libc.so.6]
+
+
 def DYNAMIC_NEEDED_RE():
     return re.compile(r'^.*'
                       r'\(NEEDED\)'
@@ -154,7 +158,7 @@ def DYNAMIC_NEEDED_RE():
 class ElfDynamicSection(object):
     """
     $ readelf --wide --dynamic /tests/dependencies-testfiles/elf/ssdeep.i686
-    
+
     Dynamic section at offset 0x4f20 contains 21 entries:
       Tag        Type                         Name/Value
      0x00000001 (NEEDED)                     Shared library: [libc.so.6]
@@ -179,6 +183,7 @@ class ElfDynamicSection(object):
      0x6ffffff0 (VERSYM)                     0x8048894
      0x00000000 (NULL)                       0x0
     """
+
     def __init__(self):
         self.readelf_option = '--dynamic'
         self.start_re = DYNAMIC_START_RE()
@@ -262,7 +267,7 @@ def SYMBOLS_START_RE():
 
 
 def SYMBOLS_INTERESTING_RE():
-#                                       51:    0804bf30       0     FUNC                 LOCAL           DEFAULT    14    __do_global_ctors_aux
+    #                                       51:    0804bf30       0     FUNC                 LOCAL           DEFAULT    14    __do_global_ctors_aux
     return re.compile(r"^\d*:\s+[A-Fa-f0-9]+\s+\d+\s+(FILE|FUNC|OBJECT)\s+(LOCAL|GLOBAL)\s+DEFAULT\s+\w+\s+(.*)$")
 
 
@@ -282,20 +287,20 @@ standardfunc = ['__do_global_dtors_aux',
 
 
 standardobj = ['__CTOR_LIST__',
-                '__DTOR_LIST__',
-                '__JCR_LIST__',
-                '__CTOR_END__',
-                '__DTOR_END__',
-                '__FRAME_END__',
-                '__JCR_END__',
-                '_fp_hw',
-                '_IO_stdin_used']
+               '__DTOR_LIST__',
+               '__JCR_LIST__',
+               '__CTOR_END__',
+               '__DTOR_END__',
+               '__FRAME_END__',
+               '__JCR_END__',
+               '_fp_hw',
+               '_IO_stdin_used']
 
 
 class ElfSymbolsTableSection(object):
     """
     $ readelf --wide --symbols bin/3rdparty/ssdeep/Linux/i686/ssdeep | more
-    
+
     Symbol table '.symtab' contains 188 entries:
       Num:    Value  Size Type    Bind   Vis      Ndx Name
         0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND
@@ -321,7 +326,7 @@ class ElfSymbolsTableSection(object):
        84: 0804e0b8     0 NOTYPE  WEAK   DEFAULT   24 data_start
        85: 00000000   347 FUNC    GLOBAL DEFAULT  UND fputs@@GLIBC_2.0
        86: 00000000    29 FUNC    GLOBAL DEFAULT  UND __errno_location@@GLIBC_2
-       87: 080499a0    82 FUNC    GLOBAL DEFAULT   14 match_pretty    
+       87: 080499a0    82 FUNC    GLOBAL DEFAULT   14 match_pretty
       140: 00000000    57 FUNC    GLOBAL DEFAULT  UND printf@@GLIBC_2.0
       141: 0804a9f0    83 FUNC    GLOBAL DEFAULT   14 chop_line_tchar
       142: 0804aa50    20 FUNC    GLOBAL DEFAULT   14 mm_magic
@@ -358,6 +363,7 @@ class ElfSymbolsTableSection(object):
       173: 00000000   311 FUNC    GLOBAL DEFAULT  UND fread@@GLIBC_2.0
       174: 0804ab80    79 FUNC    GLOBAL DEFAULT   14 sanity_check
     """
+
     def __init__(self):
         self.readelf_option = '--symbols'
         self.start_re = SYMBOLS_START_RE()
@@ -376,17 +382,21 @@ class ElfSymbolsTableSection(object):
         self.local_objects = set()
         self.global_objects = set()
         self.global_functions = set()
-        self.locals = {"FUNC": self.local_functions, "OBJECT": self.local_objects}
-        self.globals = {"FUNC": self.global_functions, "OBJECT": self.global_objects}
+        self.locals = {"FUNC": self.local_functions,
+                       "OBJECT": self.local_objects}
+        self.globals = {"FUNC": self.global_functions,
+                        "OBJECT": self.global_objects}
         self.locglobs = {"LOCAL": self.locals, "GLOBAL": self.globals}
 
         self.external_libs_functions = set()
         self.external_libs_objects = set()
-        self.externals = {"FUNC": self.external_libs_functions, "OBJECT": self.external_libs_objects}
+        self.externals = {"FUNC": self.external_libs_functions,
+                          "OBJECT": self.external_libs_objects}
 
         self.standard_functions = set()
         self.standard_objects = set()
-        self.standards = {"FUNC": self.standard_functions, "OBJECT": self.standard_objects}
+        self.standards = {"FUNC": self.standard_functions,
+                          "OBJECT": self.standard_objects}
 
         self.shared_libs_references = set()
 
@@ -406,14 +416,14 @@ class ElfSymbolsTableSection(object):
                     name, sharedlib = name.split("@@")
                     self.shared_libs_references.add(name)
 
-                if _type == 'FILE' and not name.startswith("<") :
+                if _type == 'FILE' and not name.startswith("<"):
                     if name in standardfiles:
                         self.standard_files.add(name)
                     else:
                         self.files.add(name)
 
                 if ((_type == 'FUNC' or _type == 'OBJECT')
-                    and not name.startswith("$")):
+                        and not name.startswith("$")):
                     if sharedlib:
                         self.externals[_type].add((name, sharedlib))
                     elif name in standardfunc or name in standardobj:
@@ -477,7 +487,7 @@ class ElfProgramHeadersSection(object):
       NOTE           0x000188 0x08048188 0x08048188 0x00018 0x00018 R   0x4
       GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x4
       GNU_RELRO      0x004f0c 0x0804df0c 0x0804df0c 0x000f4 0x000f4 R   0x1
-    
+
      Section to Segment mapping:
       Segment Sections...
        00
@@ -501,11 +511,12 @@ class ElfSectionHeadersSection(object):
     # starts with start_line
 
     # we need some sections to be able to et anything
-    needed_sections = ['.debug_info', '.debug_line', '.symtab', '.dynsym', '.dynstr']
+    needed_sections = ['.debug_info', '.debug_line',
+                       '.symtab', '.dynsym', '.dynstr']
     """
     $ readelf --wide --section-headers tests/dependencies-testfiles/elf/ssdeep.i686  | more
     There are 39 section headers, starting at offset 0xf5ec:
-    
+
     Section Headers:
       [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
       [ 0]                   NULL            00000000 000000 000000 00      0   0  0
@@ -561,7 +572,7 @@ class ElfVersionSymbolsSection(object):
     readelf_option = '--version-info'
     """
     $ readelf --wide --version-info  tests/dependencies-testfiles/elf/ssdeep.i686
-    
+
     Version symbols section '.gnu.version' contains 54 entries:
      Addr: 0000000008048894  Offset: 0x000894  Link: 6 (.dynsym)
       000:   0 (*local*)       2 (GLIBC_2.0)     2 (GLIBC_2.0)     2 (GLIBC_2.0)
@@ -578,13 +589,13 @@ class ElfVersionSymbolsSection(object):
       02c:   2 (GLIBC_2.0)     2 (GLIBC_2.0)     2 (GLIBC_2.0)     2 (GLIBC_2.0)
       030:   2 (GLIBC_2.0)     1 (*global*)      2 (GLIBC_2.0)     2 (GLIBC_2.0)
       034:   2 (GLIBC_2.0)     2 (GLIBC_2.0)
-    
+
     Version needs section '.gnu.version_r' contains 1 entries:
      Addr: 0x0000000008048900  Offset: 0x000900  Link: 7 (.dynstr)
       000000: Version: 1  File: libc.so.6  Cnt: 3
       0x0010:   Name: GLIBC_2.1  Flags: none  Version: 4
       0x0020:   Name: GLIBC_2.3  Flags: none  Version: 3
-      0x0030:   Name: GLIBC_2.0  Flags: none  Version: 2    
+      0x0030:   Name: GLIBC_2.0  Flags: none  Version: 2
     """
     pass
 
@@ -593,26 +604,26 @@ class ElfDebugPubnamesSection(object):
     """
     $ readelf --wide --debug-dump=pubnames  tests/dependencies-testfiles/elf/ssdeep.i686   |less
     Contents of the .debug_pubnames section:
-    
+
       Length:                              33
       Version:                             2
       Offset into .debug_info section:     0x0
       Size of area in .debug_info section: 141
-    
+
         Offset      Name
         117                 _IO_stdin_used
       Length:                              23
       Version:                             2
       Offset into .debug_info section:     0x111
       Size of area in .debug_info section: 1676
-    
+
         Offset      Name
         1285                main
       Length:                              111
       Version:                             2
       Offset into .debug_info section:     0x79d
       Size of area in .debug_info section: 1677
-    
+
         Offset      Name
         1003                lsh_list_init
         1045                match_init
@@ -624,14 +635,14 @@ class ElfDebugPubnamesSection(object):
       Version:                             2
       Offset into .debug_info section:     0xe2a
       Size of area in .debug_info section: 1171
-    
+
         Offset      Name
         1003                hash_file
       Length:                              56
       Version:                             2
       Offset into .debug_info section:     0x12bd
       Size of area in .debug_info section: 2732
-    
+
         Offset      Name
         1676                remove_double_dirs
         2129                process_normal
@@ -639,7 +650,7 @@ class ElfDebugPubnamesSection(object):
       Version:                             2
       Offset into .debug_info section:     0x1d69
       Size of area in .debug_info section: 1083
-    
+
         Offset      Name
         787                 have_processed_dir
         863                 processing_dir
@@ -652,14 +663,17 @@ class ElfDebugPubnamesSection(object):
     """
     pass
 
-#0804e000  00000107 R_386_JUMP_SLOT   00000000   fileno
+# 0804e000  00000107 R_386_JUMP_SLOT   00000000   fileno
+
+
 def RELOC_RE():
     return re.compile(r"^([0-9a-fA-F]+)\s+([A-Fa-f0-9]+)\s+(\w+)\s+([A-Fa-f0-9]+)\s+(\w+)")
+
 
 class ElfRelocatablesSection(object):
     """
     $ readelf --relocs ssdeep.i686 | less
-    
+
     Relocation section '.rel.dyn' at offset 0x940 contains 6 entries:
      Offset     Info    Type            Sym.Value  Sym. Name
     0804dff0  00000606 R_386_GLOB_DAT    00000000   __gmon_start__
@@ -668,7 +682,7 @@ class ElfRelocatablesSection(object):
     0804e0f4  00003205 R_386_COPY        0804e0f4   stderr
     0804e100  00002f05 R_386_COPY        0804e100   stdout
     0804e104  00003505 R_386_COPY        0804e104   optarg
-    
+
     Relocation section '.rel.plt' at offset 0x970 contains 46 entries:
      Offset     Info    Type            Sym.Value  Sym. Name
     0804e000  00000107 R_386_JUMP_SLOT   00000000   fileno
@@ -718,12 +732,13 @@ class ElfRelocatablesSection(object):
     0804e0b0  00002d07 R_386_JUMP_SLOT   00000000   __strdup
     0804e0b4  00002e07 R_386_JUMP_SLOT   00000000   exit
     """
+
     def __init__(self):
         self.readelf_option = '--relocs'
         self.start_re = re.compile("^Relocation section")
         self.end_re = EMPTY_LINE_RE()
         self.sym_names = set()
-        
+
     def parse(self, elf, file_like):
         while 1:
             line = next_line(file_like)
@@ -734,4 +749,3 @@ class ElfRelocatablesSection(object):
             if match:
                 sym = match.groups()[4]
                 self.sym_names.add(sym)
-

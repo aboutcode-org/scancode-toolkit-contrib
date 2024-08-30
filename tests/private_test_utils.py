@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 """
 FIXME: TEMPORARY COPY of commoncode.testcase to handle new semantics for get_test_loc
@@ -53,7 +53,6 @@ class EnhancedAssertions(TestCaseClass):
     """
     # always show full diff
     maxDiff = None
-
 
     def failUnlessRaisesInstance(self, excInstance, callableObj,
                                  *args, **kwargs):
@@ -168,7 +167,7 @@ class FileDrivenTesting(object):
             extension = '.txt'
 
         if extension and not extension.startswith('.'):
-                extension = '.' + extension
+            extension = '.' + extension
 
         file_name = file_name + extension
         temp_dir = self.get_temp_dir(dir_name)
@@ -213,7 +212,6 @@ class FileDrivenTesting(object):
             # editors temp file leftovers
             map(os.remove, [os.path.join(root, file_loc)
                             for file_loc in files if file_loc.endswith('~')])
-
 
     def __extract(self, test_path, extract_func=None, verbatim=False):
         """
@@ -355,7 +353,7 @@ def is_same(dir1, dir2):
     """
     compared = dircmp(dir1, dir2)
     if (compared.left_only or compared.right_only or compared.diff_files
-        or compared.funny_files):
+            or compared.funny_files):
         return False
 
     for subdir in compared.common_dirs:
