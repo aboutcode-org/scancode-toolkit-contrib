@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2017 nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/scancode-toolkit/
+# http://nexb.com and https://github.com/aboutcode-org/scancode-toolkit/
 # The ScanCode software is licensed under the Apache License version 2.0.
 # Data generated with ScanCode require an acknowledgment.
 # ScanCode is a trademark of nexB Inc.
@@ -20,7 +20,7 @@
 #  ScanCode should be considered or used as legal advice. Consult an Attorney
 #  for any legal advice.
 #  ScanCode is a free software code scanning tool from nexB Inc. and others.
-#  Visit https://github.com/nexB/scancode-toolkit/ for support and download.
+#  Visit https://github.com/aboutcode-org/scancode-toolkit/ for support and download.
 
 from __future__ import absolute_import, print_function
 
@@ -32,7 +32,7 @@ from commoncode.functional import flatten
 import os
 
 
-""" 
+"""
 A set of functions and objects to extract information from source code files
 """
 LOG = logging.getLogger(__name__)
@@ -44,6 +44,7 @@ class Source(object):
     """
     Source code object.
     """
+
     def __init__(self, sourcefile):
         # yield nothing if we do not have a proper command
         self.sourcefile = sourcefile
@@ -72,7 +73,7 @@ class Source(object):
         envt = {'TMPDIR': ctags_temp_dir}
         try:
             rc, stdo, err = command.execute('ctags', ctags_args, env=envt,
-                                             root_dir=bin_dir, to_files=True)
+                                            root_dir=bin_dir, to_files=True)
             if rc != 0:
                 raise Exception(open(err).read())
 
@@ -92,7 +93,7 @@ class Source(object):
                     splitted = line.split('\t')
 
                     if (line.endswith('function\tfile:')
-                        or line.endswith('prototype\tfile:')):
+                            or line.endswith('prototype\tfile:')):
                         self.local_functions.append(splitted[0])
 
                     elif (line.endswith('function')

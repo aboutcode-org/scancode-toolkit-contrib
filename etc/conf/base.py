@@ -6,11 +6,13 @@ import sys
 Check that we run a supported OS and architecture.
 """
 
+
 def unsupported(platform):
     print('Unsupported OS/platform %r.' % platform)
-    print('See https://github.com/nexB/scancode-toolkit/ for supported OS/platforms.')
-    print('Enter a ticket https://github.com/nexB/scancode-toolkit/issues asking for support of your OS/platform combo.')
+    print('See https://github.com/aboutcode-org/scancode-toolkit/ for supported OS/platforms.')
+    print('Enter a ticket https://github.com/aboutcode-org/scancode-toolkit/issues asking for support of your OS/platform combo.')
     sys.exit(1)
+
 
 if sys.maxsize > 2 ** 32:
     arch = '64'
@@ -20,7 +22,7 @@ else:
 sys_platform = str(sys.platform).lower()
 if 'linux' in sys_platform:
     os = 'linux'
-elif'win32' in sys_platform:
+elif 'win32' in sys_platform:
     os = 'win'
 elif 'darwin' in sys_platform:
     os = 'mac'
